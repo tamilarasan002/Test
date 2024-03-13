@@ -5,6 +5,7 @@ pipeline {
         DOCKER_REGISTRY = "ipsps-tnd.kfon.ksitil.org:5000"
         REMOTE_SERVER = "root@172.20.40.27"
         REMOTE_PATH = "/home/ipmed"
+        KUBE_CONFIG = credentials('admin_conf')
     }
 
     stages {
@@ -36,9 +37,9 @@ pipeline {
 
         stage('Deploy App to Kubernetes') {
             steps {
-                withCredentials([file(credentialsId: 'admin_conf', variable: 'KUBECONFIG')]) {
-                    script {
-                        sh "kubectl apply -f /home/esakkim/nginx.yaml"
+                script {
+                    withCredentials([file(credentialsId: 'admin_conf', variable: 'KUBECONFIG')]) {
+                        sh "kubectl apply -f nginx.yaml" 
                     }
                 }
             }
