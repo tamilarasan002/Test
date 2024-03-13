@@ -6,10 +6,15 @@ pipeline {
         KUBE_CONFIG = credentials('admin_conf')
         REMOTE_SERVER = "root@172.20.40.27"
         REMOTE_PATH = "/home/ipmed"
-
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/tamilarasan002/Test' 
+            }
+        }
+
         stage('SSH to Remote Server') {
             steps {
                 sshagent(['sshinfo']) {
@@ -19,7 +24,6 @@ pipeline {
                 echo "Success: Loaded Docker image from tar file"
             }
         }
-
 
         stage('Pushing docker image') {
             steps {
